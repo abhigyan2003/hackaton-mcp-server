@@ -1,12 +1,21 @@
-'use client'
+"use client";
 
-import axios from 'axios';
+import { Descope } from "@descope/nextjs-sdk";
+import { useRouter } from "next/navigation";
 
-export default function Page(){
-    
-    return (
-        <div>
-            <h2>Sign In</h2>
-        </div>
-    )
+export default function Page() {
+   const router = useRouter();
+
+   // Handle successful authentication
+   const handleSuccess = () => {
+       router.replace("/");
+   };
+
+   return (
+       <Descope
+           flowId="oauth-login"
+           onSuccess={handleSuccess}
+           onError={(e) => alert("Something went wrong. Please try again.")}
+       />
+   );
 }

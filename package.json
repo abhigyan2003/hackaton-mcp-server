@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@descope/nextjs-sdk": "^0.14.15",
     "@prisma/client": "^5.17.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
