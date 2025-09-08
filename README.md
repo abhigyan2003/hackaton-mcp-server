@@ -1,76 +1,198 @@
-# Implementing Authentication and RBAC in a Next.js App Using Descope
+# 🔍 Repository Discovery Platform
 
-This repository demonstrates how to add authentication and RBAC in a Next.js application using the the Descope Next.js SDK.
+**MCP Hackathon 2025 - Theme 1: Civic Engagement**
 
-> This is a starter template. Check out the full code in the `main` branch.
+## Repo Scout
 
-## Running the Project Locally
+A smart repository discovery platform that helps developers find the perfect GitHub repositories for their projects and learning journey.
 
-To run the project locally, you need to have the following:
+## 🎯 Problem Statement
 
--   [Node.js v18](https://nodejs.org/en/download) installed on your local machine
--   [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your local machine
--   A [Descope account](https://www.descope.com/sign-up)
+In today's vast open-source ecosystem, developers struggle to:
+- Find relevant repositories for new projects
+- Discover beginner-friendly repositories to contribute to
+- Get meaningful brainstorming ideas from existing codebases
+- Identify repositories that match their skill level and interests
 
-Having met the prerequisites, follow these steps:
+## 💡 Solution Overview
 
-1. Create a project on Descope.
+Our platform leverages Model Control Protocol (MCP) servers and AI to provide intelligent repository recommendations through a user-friendly web interface.
 
-    - Under "Who uses your application?", select **Consumer**:
+### Key Features
+- **Smart Repository Search**: AI-powered search using GitHub MCP tools
+- **Beginner-Friendly Filtering**: Identifies good first issues and beginner resources
+- **Repository Analysis**: Deep analysis of repository quality, activity, and community
+- **Comparative Analysis**: Compare multiple repositories to make informed decisions
+- **Personalized Recommendations**: Tailored suggestions based on user preferences
 
-        ![Selecting the target audience](https://i.imgur.com/MsCgvJ5.png)
+## 🏗️ Architecture
 
-    - For "Which authentication methods do you want to use?", select **Magic Link**:
+### Two Implementation Approaches
 
-        ![Selecting the authentication method](https://i.imgur.com/vMWW4Ak.png)
+#### Approach 1: LM Studio Integration
+- **Primary Stack**: Next.js frontend + Flask backend
+- **AI Model**: LM Studio with customizable parameters
+- **MCP Integration**: Docker-hosted GitHub MCP servers
+- **Communication**: CLI streams with stdin/stdout
+- **Orchestration**: LangGraph for workflow management
 
-    - Skip the MFA method step and click **Go ahead without MFA**:
+#### Approach 2: Claude Desktop (Optimized)
+- **Platform**: Claude Desktop application
+- **Performance**: Enhanced speed and efficiency
+- **MCP Tools**: Direct integration with GitHub and custom repo_analyzer MCPs
 
-        ![Skipping MFA method step](https://i.imgur.com/6wiRdtL.png)
+## 🛠️ Tech Stack
 
-    - Generate the flows:
+### Frontend
+- **Framework**: Next.js
+- **Authentication**: Descope (OAuth with GitHub & Google)
+- **Styling**: Modern responsive design
 
-        ![The flows that will be generated](https://i.imgur.com/i6IIy1h.png)
+### Backend
+- **API Server**: Flask
+- **AI Integration**: LM Studio API / Claude Desktop
+- **Workflow**: LangGraph for repository filtering and analysis
+- **Containerization**: Docker for MCP servers
 
-2. Obtain the project ID:
+### MCP Tools
+1. **GitHub MCP** (Standard)
+   - `search_repository`
+   - `get_issues`
+   - `get_directory_contents`
 
-    ![Obtaining the project ID](https://i.imgur.com/CPT2QWk.png)
+2. **Custom repo_analyzer MCP** (FastMCP)
+   - `analyze_repository`
+   - `get_beginner_resources`
+   - `suggest_good_first_issues`
+   - `compare_repositories`
 
-3. Generate a management key:
+## 🚀 Getting Started
 
-    ![Generating a management key](https://i.imgur.com/uAIrcbH.png)
+### Prerequisites
+- Node.js 18+
+- Python 3.8+
+- Docker
+- LM Studio (for Approach 1)
 
-4. Clone the project to your local machine:
+### Installation
 
-    ```bash
-    git clone --single-branch -b main https://github.com/kimanikevin254/descope-nextjs-auth-rbac.git
-    ```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd repository-discovery-platform
+   ```
 
-5. Navigate into the project directory and install all the dependencies:
+2. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-    ```bash
-    cd descope-nextjs-auth-rbac && npm i
-    npm i @descope/nextjs-sdk
-    ```
+3. **Backend Setup**
+   ```bash
+   cd backend
+   pip install flask httpx fastmcp flask-cors
+   python app.py
+   ```
 
-6. Rename `.env.example` to `.env` and replace the placeholder values with the values you obtained in the previous steps.
+4. **MCP Server Setup**
+   ```bash
+   docker-compose up -d
+   ```
 
-7. Run prisma migration:
+### Configuration
 
-    ```bash
-    npx prisma migrate dev --name init
-    ```
+1. **Environment Variables**
+   ```env
+   GITHUB_PERSONAL_ACCESS_TOKEN = <your_github_token>
+   DESCOPE_PROJECT_ID = your_descope_project_id
+   DESCOPE_MANAGEMENT_KEY = descope_management_key
+   LM_STUDIO_API_URL = http://localhost:1234
+   ```
 
-8. Open `app/layout.js` and replace `<YOUR-PROJECT-ID>` with the necessary value.
+2. **LM Studio Configuration**
+   - Start LM Studio server on port 1234
+   - Load your preferred model
+   - Configure MCP integration
 
-9. Run the application using the command `npm run dev` and navigate to "http://localhost:3000". You'll be redirected to the signup page. Complete the auth process.
+## 📱 Usage
 
-10. Go to the Descope console, select **Authorization** from the sidebar, and click the **+ Role** button. In the "Add Role" modal, provide "editor" as the name and "Can write posts and submit them for approval" as the description. Then click the **Add** button.
+### Web Interface
 
-    ![Adding a role](https://i.imgur.com/nl5ylFG.png)
+1. **Sign In**: `http://localhost:3000/sign-in`
+   - GitHub or Google OAuth via Descope
 
-    Repeat the same process to create a role for the admin. Provide "admin" as the role and "Can toggle a post's published status as the description".
+2. **Generate Recommendations**: `http://localhost:3000/generate`
+   - Enter your project description or interests
+   - Customize AI parameters (temperature, max tokens, top-k, etc.)
+   - Get intelligent repository recommendations
 
-11. Assign the editor role to the user and go back to the application. You'll be able to write posts and submit them for approval but you can't toggle their published status.
+### API Endpoints
 
-12. On the Descope console and assign the admin role to the user. Go back to the application, reload it, and you'll be able to toggle a post's published status.
+#### LM Studio Endpoints
+- `GET /health` - Server health check
+- `GET /models` - Available models
+- `POST /chat` - Process prompts
+- `POST /chat/completions` - Get AI completions
+
+## 🔧 Features Deep Dive
+
+### Intelligent Filtering
+- **Star Count Analysis**: Repository popularity metrics
+- **Commit History**: Activity and maintenance status
+- **Issue Management**: Active community engagement
+- **Contributor Analysis**: Community size and diversity
+
+### Repository Quality Assessment
+- **README Quality**: Documentation completeness
+- **License Compliance**: Open-source license verification
+- **Beginner Friendliness**: Good first issues and contribution guides
+- **Project Structure**: Code organization and best practices
+
+### Personalization
+- **Skill Level Matching**: Beginner to advanced recommendations
+- **Technology Stack**: Language and framework preferences
+- **Contribution History**: Based on user's GitHub activity
+
+## 🎮 Demo
+![image](../descope-nextjs-auth-rbac/public/snap_1.PNG)
+![image](../descope-nextjs-auth-rbac/public/snap_2.PNG)
+![image](../descope-nextjs-auth-rbac/public/snap_3.PNG)
+![image](../descope-nextjs-auth-rbac/public/snap_4.PNG)
+![image](../descope-nextjs-auth-rbac/public/snap_6.PNG)
+
+## Architecture
+![image](../descope-nextjs-auth-rbac/public/diagram(working).PNG)
+
+## 🏆 Hackathon Results
+
+### Achievements
+- Successfully integrated multiple MCP servers
+- Created custom MCP tools for enhanced repository analysis
+- Implemented two different architectural approaches
+- Achieved significant performance improvements in Approach 2
+
+### Lessons Learned
+- MCP integration challenges with stdin/stdout communication
+- Performance optimization through Claude Desktop integration
+- Importance of user experience in AI-powered applications
+
+## 👥 Team
+
+- [Proytookh Dutta] - Frontend Development
+- [Ammar Arsiwala] - Backend & MCP Integration (https://github.com/ammar-arsiwala)
+- [Siyaram Sharama] - AI Model Integration (https://github.com/Siyaram68)
+- [Abhigyan Borah] - DevOps 
+- [Aaddii Guleria] - Documentation 
+
+## 🙏 Acknowledgments
+
+- MCP Hackathon organizers
+- GitHub API for repository data
+- LM Studio team for local AI model hosting
+- Descope for authentication solutions
+- FastMCP for simplified MCP development
+
+
+**Built with ❤️ for the MCP Hackathon 2025**
