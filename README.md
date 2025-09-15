@@ -182,7 +182,7 @@ Our platform leverages Model Control Protocol (MCP) servers and AI to provide in
 
 - [Proytookh Dutta] - Frontend Development
 - [Ammar Arsiwala] - Backend & MCP Integration (https://github.com/ammar-arsiwala)
-- [Siyaram Sharama] - AI Model Integration (https://github.com/Siyaram68)
+- [Siyaram Sharma] - AI Model Integration (https://github.com/Siyaram68)
 - [Abhigyan Borah] - DevOps 
 - [Aaddii Guleria] - Documentation 
 
